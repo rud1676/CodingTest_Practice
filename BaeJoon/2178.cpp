@@ -3,88 +3,60 @@
 #include <queue>
 #include <utility>
 #include <vector>
+#define MAX 101
 
 using namespace std;
+
 int m, n;
+int map[MAX][MAX];
+int vis[MAX][MAX];
+int dist[MAX][MAX];
+int dir_x[4] = {0, 0, 1, -1};
+int dir_y[4] = {1, -1, 0, 0};
 
-class trace {
-public:
-  int m;
-  int n;
-  int count;
-  trace(int n, int m) {
-    this->m = m;
-    this->n = n;
-    this->count = 0;
-  }
-  trace(int n, int m, int c) {
-    this->m = m;
-    this->n = n;
-    this->count = c;
-  }
-
-  bool operator==(const pair<int, int> other) {
-    return (this->m == other.first && this->n == other.second);
-  }
-  bool operator==(const trace &other) {
-    return (this->m == other.m && this->n == other.n);
-  }
-  bool operator==(const trace *other) {
-    return (this->m == other->m && this->n == other->n);
-  }
-};
-bool canmove(vector<vector<int>> map, pair<int, int> check) {
-  if (check.first < 0 || check.first >= n)
+bool canmove(int y, int x) {
+  if (y < 0 || y >= n)
     return false;
-  else if (check.second < 0 || check.second >= m)
+  else if (x < 0 || x >= m)
     return false;
 
-  if (map[check.first][check.second] == 0)
+  if (map[y][x] == 0)
+    return false;
+  if (vis[y][x])
     return false;
   return true;
 }
 
-int bfs(vector<vector<int>> map, int m, int n) {
-  vector<trace *> v;
-  queue<trace *> q;
+void bfs(int starty, int startx) {
+  queue<pair<int, int>> q;
 
-  q.push(new trace(0, 0, 0));
+  q.push(make_pair(0, 0));
+  dist[0][0] = 1;
 
   while (!q.empty()) {
-    trace *t = q.front();
+    pair<int, int> t = q.front(); // first y second x
     q.pop();
-    auto f = find(v.begin(), v.end(), t);
-    // 방문하지 않았다면
-    if (f == v.end()) {
-      // 4방향 체크해서 큐에 넣어주기
-      if (t->n == n - 1 && t->m == m - 1) {
-        return t->count;
+    // 4방향 체크해서 큐에 넣어주기
+    pair<int, int> nt;
+    for (int i = 0; i < 4; i++) {
+      if (canmove(t.first + dir_y[i], t.second + dir_x[i])) {
+        nt = make_pair(t.first + dir_y[i], t.second + dir_x[i]);
+        dist[nt.first][nt.second] = dist[t.first][t.second] + 1;
+        vis[nt.first][nt.second] = 1;
+        q.push(make_pair(nt.first, nt.second));
       }
-      if (canmove(map, make_pair(t->n + 1, t->m))) {
-        q.push(new trace(t->n + 1, t->m, t->count + 1));
-      } else if (canmove(map, make_pair(t->n - 1, t->m))) {
-        q.push(new trace(t->n - 1, t->m, t->count + 1));
-      } else if (canmove(map, make_pair(t->n, t->m + 1))) {
-        q.push(new trace(t->n, t->m + 1, t->count + 1));
-      } else if (canmove(map, make_pair(t->n, t->m - 1))) {
-        q.push(new trace(t->n, t->m - 1, t->count + 1));
-      }
-      v.push_back(new trace(t->n, t->m, t->count));
     }
   }
-  return -1;
 }
+
 int main() {
-  int n, m;
   cin >> n >> m;
-  vector<vector<int>> map(n);
 
   for (int i = 0; i < n; i++) {
-    map[i].assign(m, 0);
     for (int j = 0; j < m; j++) {
       scanf("%1d", &map[i][j]);
     }
   }
-
-  bfs(map, m, n);
+  bfs(0, 0);
+  cout << dist[n - 1][m - 1] << endl;
 }

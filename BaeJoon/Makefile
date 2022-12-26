@@ -1,12 +1,12 @@
 t=$1
-CC=g++
-OPT=std=c++11
+CC=clang++
+OPT=std=c++17
 
 
 all: $(t) exec
 
 $(t) : $(t).cpp
-	$(CC) -$(OPT) -o $(t) $(t).cpp
+	$(CC) -$(OPT) -o $(t) -g $(t).cpp
 
 exec:
 	./$(t)
