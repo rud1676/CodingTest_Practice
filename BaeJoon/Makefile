@@ -12,4 +12,4 @@ exec:
 	./$(t)
 
 clean:
-	rm -rf `ls | grep -v Makefile | grep -v *.cpp`
+	find . ! \( -name '*.cpp' -o -name 'Makefile' -o -name '.' \) | xargs rm -r
