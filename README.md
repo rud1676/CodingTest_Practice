@@ -10,3 +10,9 @@ make all t={problem_code}
 
 make clean
 ```
+
+
+## Record
+
+### BaeJoon
+7569,
