@@ -1,6 +1,9 @@
 t=$1
-CC=clang++
+#CC=clang++
+CC=g++
+
 OPT=std=c++17
+HEAP=268435456
 
 
 all: $(t) exec

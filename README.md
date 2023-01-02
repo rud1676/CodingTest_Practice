@@ -15,4 +15,9 @@ make clean
 ## Record
 
 ### BaeJoon
-7569,
+
+comming soon after python code
+
+## Check problem
+
+> 9205
