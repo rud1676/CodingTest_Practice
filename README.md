@@ -21,4 +21,8 @@ comming soon after python code
 ## Check problem
 
 > 9205
-> 2839, 11047, 1932, 1080, 2138
+> 1080, 2138
+
+## Checked Probeldm
+
+> 2839, 11047, 
