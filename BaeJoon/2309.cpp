@@ -20,6 +20,7 @@ void comb(int start, vector<int> b,int k){
 	}
 	return;
 }
+
 int main(){
 
 	for(int i=0;i<9;i++) cin >> n[i];
