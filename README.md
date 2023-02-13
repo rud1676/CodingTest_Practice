@@ -26,4 +26,4 @@ comming soon after python code
 ## Checked Probeldm
 
 Feb 10
-> 2979
+> 2979 (1-K)
