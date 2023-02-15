@@ -27,3 +27,15 @@ comming soon after python code
 
 Feb 10
 > 2979 (1-K)
+
+Feb 13
+> 3986
+
+Feb 14
+> 1629
+
+
+
+## keyword
+
+짝짓기, 폭팔 => 스택
