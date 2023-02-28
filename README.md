@@ -25,20 +25,20 @@ comming soon after python code
 
 ## Checked Probeldm
 
-Feb 10
-> 2979 (1-K)
-
-Feb 13
-> 3986
-
-Feb 14
-> 1629
-
-Feb 16
-> 1992
-
 Feb 17
 > 2852, 1436 , 4949, 2636
+
+Feb 21
+> 1068,1325
+
+Feb 22
+> 17298
+
+Feb 23
+> 1189
+
+Feb 25
+> 17136
 
 
 ## keyword
