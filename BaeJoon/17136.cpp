@@ -2,34 +2,48 @@
 
 using namespace std;
 
-int arr[12][12];
-
-int fill(int n){
-	int cnt=0;
-	for(int i=0;i<10-n+1;i++){
-		for(int j=0;j<10-n+1;j++){
-
-			bool ischange=true;
-			for(int a=i;a<i+n;a++){
-				for(int b=j;b<j+n;b++){
-					if(arr[a][b]!=1){
-						ischange=false;
-					}
-				}
-			}
-
-			if(ischange){
-				cnt++;
-
-				for(int a=i;a<i+n;a++){
-					for(int b=j;b<j+n;b++){
-						arr[a][b]=0;
-					}
-				}
-			}
+int arr[10][10];
+map<int,int> mp;
+int ret = 123456789;
+int n=10;
+bool check(int y,int x,int size){
+	if(y+size > n || x+size>n) return false;
+	for(int i=y;i<y+size;i++){
+		for(int j=x;j<x+size;j++){
+			if(arr[i][j]==0) return false;
 		}
 	}
-	return cnt;
+	return true;
+}
+void draw(int y,int x,int size,int num){
+	for(int i=y;i<y+size;i++){
+		for(int j=x;j<x+size;j++){
+			arr[i][j]=num;
+		}
+	}
+}
+void dfs(int y,int x,int cnt){
+	//cout << "input dfs : " << " x : " << x << " y : " << y << endl;
+	if(cnt>=ret) return;
+	if(x==n){ dfs(y+1,0,cnt); return;}
+	if(y==n){
+		ret = min(cnt,ret);return;
+	}
+	if(arr[y][x]==0){ dfs(y,x+1,cnt); return; }
+
+	for(int size=5;size>=1;size--){
+		if(mp[size]==5) continue;
+		if(check(y,x,size)){
+			if(size==5){
+				//			cout << " x : " << x << " y : " << y << endl;
+			}
+			mp[size]++;
+			draw(y,x,size,0);
+			dfs(y,x+size,cnt+1);
+			draw(y,x,size,1);
+			mp[size]--;
+		}
+	}
 }
 
 int main(){
@@ -39,12 +53,10 @@ int main(){
 			cin >> arr[i][j];
 		}
 	}
+	dfs(0,0,0);
+	cout << (ret == 123456789 ? -1 : ret) << endl;
 
-	int result=0;
-	for(int i=5;i>=1;i--){
-		result +=fill(i);
-	}
-	cout << result<< endl;
+
 	return 0;
 }
 
