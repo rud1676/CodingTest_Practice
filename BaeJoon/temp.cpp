@@ -1,98 +1,49 @@
-#include <bits/stdc++.h>
+#include<bits/stdc++.h>
 
 using namespace std;
 
-int dice[10];
-int m[100];
-int mal[4];
-int msc[4];
-vector<vector<int>> v(100);
-int r;
 
-void init(){
-	for(int i=1;i<=20;i++){
-		m[i]=i*2;
-	} //i 20 => 32
-	m[21]=13; m[22]=16; m[23]=19;
-	m[24]=25; //center;
-	m[25]=22; m[26]=24;
-	m[27]=28; m[28]=27;m[29]=26;
-	m[30]=30;m[31]=35;m[32]=999;
+int arr[61][61][61];
+int ar[3];
 
-	for(int i=0;i<=31;i++){
-		v[i].push_back(i+1);
-	}
-	v[5].push_back(21);
-	v[10].push_back(25);
-	v[15].push_back(27);
+int diff[6][3]= {
+	{9,3,1},{9,1,3},{3,9,1},{1,9,3},{1,3,9},{3,1,9}
+};
 
-	v[26].pop_back();
-	v[26].push_back(24);
+int bfs(int r1,int r2,int r3){
 
-	v[29].pop_back();
-	v[29].push_back(24);
+	queue<vector<int>> q;
+	q.push({r1,r2,r3});
 
-	v[24].pop_back();
-	v[24].push_back(30);
-
-	v[31].pop_back();
-	v[31].push_back(20);
-	v[20].pop_back();
-	v[20].push_back(32);
-}
-
-bool ismal(int pos,int ml){
-	for(int i=0;i<4;i++){
-		if(ml==i) continue; // 자기자신 체크 x
-		if(mal[i] == pos && pos!=32) return true;
-	}
-	return false;
-}
-int movemal(int pos,int cnt){
-	if(v[pos].size()>=2){
-		pos = v[pos][1];
-		cnt--;
-	}
-
-	while(cnt--){
-		pos = v[pos][0];
-		if(pos==32) break;
-	}
-	return pos;
-}
-
-int bfs(int level){
-	if(level==10){return 0; }
-
-	int ret=0;
-	for(int i=0;i<4;i++){
-		int temp_pos=mal[i];
-		if(temp_pos==32) continue;
-
-		int mov_pos= movemal(temp_pos,dice[level]);
-		if(!ismal(mov_pos,i)){
-			//가능하다면
-			mal[i] = mov_pos;
-			ret = max(ret, bfs(level+1)+m[mov_pos]);
-			mal[i] = temp_pos;
+	while(q.size()){
+		int a1,a2,a3;
+		a1 = q.front()[0];
+		a2 = q.front()[1];
+		a3 = q.front()[2];
+		if(a1==0&&a2==0&&a3==0){
+			return arr[a1][a2][a3];
+		}
+		q.pop();
+		for(int i=0;i<6;i++){
+			int b1 = max(a1-diff[i][0],0);
+			int b2 = max(a2-diff[i][1],0);
+			int b3 = max(a3-diff[i][2],0);
+			if(arr[b1][b2][b3]!=0) continue;
+			arr[b1][b2][b3] = arr[a1][a2][a3]+1;
+			q.push({b1,b2,b3});
 		}
 	}
-
-	cout << "mal pos:---" << endl;
-	cout << mal[0] << " " <<mal[1] << " "<< mal[2] << " "<< mal[3] << " " <<endl<<endl;
-	cout << " ret : " << ret<<endl<<endl;
-
-	return ret;
+	return -1;
 }
+
 int main(){
-	for(int i=0;i<10;i++){
-		cin >> dice[i];
+	int n;
+	cin >> n;
+	for(int i=0;i<n;i++){
+		cin >> ar[i];
 	}
-	init();
+	cout << bfs(ar[0],ar[1],ar[2]) <<endl;
 
-	cout << bfs(0)<<endl;
+
 
 }
-
-
-
