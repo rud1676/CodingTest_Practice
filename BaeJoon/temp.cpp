@@ -2,48 +2,79 @@
 
 using namespace std;
 
+int n,m;
+char mp[1001][1001];
+int vst[1001][1001];
+int vstf[1001][1001];
+int sy,sx;
+queue<pair<int,int>> fq;
+int dx[4] = {0,0,1,-1};
+int dy[4] = {1,-1,0,0};
 
-int arr[61][61][61];
-int ar[3];
-
-int diff[6][3]= {
-	{9,3,1},{9,1,3},{3,9,1},{1,9,3},{1,3,9},{3,1,9}
-};
-
-int bfs(int r1,int r2,int r3){
-
-	queue<vector<int>> q;
-	q.push({r1,r2,r3});
-
-	while(q.size()){
-		int a1,a2,a3;
-		a1 = q.front()[0];
-		a2 = q.front()[1];
-		a3 = q.front()[2];
-		if(a1==0&&a2==0&&a3==0){
-			return arr[a1][a2][a3];
+void bfsf(){
+	while(fq.size()){
+		int x,y;
+		tie(y,x)=fq.front();fq.pop();
+		for(int i=0;i<4;i++){
+			int nx = x+dx[i];
+			int ny = y+dy[i];
+			if(nx<0||ny<0||ny>=n||nx>=m||mp[ny][nx]=='#'||vstf[ny][nx]!=123456789)  continue;
+			vstf[ny][nx]=vstf[y][x]+1;
+			fq.push({ny,nx});
 		}
-		q.pop();
-		for(int i=0;i<6;i++){
-			int b1 = max(a1-diff[i][0],0);
-			int b2 = max(a2-diff[i][1],0);
-			int b3 = max(a3-diff[i][2],0);
-			if(arr[b1][b2][b3]!=0) continue;
-			arr[b1][b2][b3] = arr[a1][a2][a3]+1;
-			q.push({b1,b2,b3});
+	}	
+}
+
+int bfsj(){
+	queue<pair<int,int>> jq;
+	jq.push({sy,sx});
+	vst[sy][sx]=1;
+	while(jq.size()){
+		int x,y;
+		tie(y,x)=jq.front();jq.pop();
+		if(y==0||x==0||y==n-1||x==m-1) {
+			return vst[y][x];
+		}
+		for(int i=0;i<4;i++){
+			int nx = x+dx[i];
+			int ny = y+dy[i];
+			if(nx<0||ny<0||ny>=n||nx>=m||mp[ny][nx]=='#'||vst[ny][nx]!=0)  continue;
+			if(vst[y][x]+1>=vstf[ny][nx]) continue;
+			vst[ny][nx]=vst[y][x]+1;
+			jq.push({ny,nx});
+
 		}
 	}
 	return -1;
 }
 
 int main(){
-	int n;
-	cin >> n;
+	ios_base::sync_with_stdio(false);cin.tie(NULL);cout.tie(NULL);
+	cin >> n >> m;
+	fill(&vstf[0][0],&vstf[0][0]+1001*1001,123456789);
 	for(int i=0;i<n;i++){
-		cin >> ar[i];
+		string s;
+		cin >> s;
+		for(int j=0;j<m;j++){
+			mp[i][j]=s[j];
+			if(mp[i][j]=='J'){
+				sy=i;
+				sx=j;
+			}else if(mp[i][j]=='F'){
+				vstf[i][j]=1;
+				fq.push({i,j});
+			}
+		}
 	}
-	cout << bfs(ar[0],ar[1],ar[2]) <<endl;
 
+	bfsf();
+	int result =bfsj();
+	if(result==-1)
+		cout<< "IMPOSSIBLE\n";
+	else cout << result << '\n';
+
+	return 0;
 
 
 }
+

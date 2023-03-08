@@ -24,7 +24,7 @@ comming soon after python code
 ## Checked Probeldm
 
 March 01
-> 4179, 16234
+> 16234
 
 March 02
 > 16637, 12851
@@ -33,7 +33,7 @@ March 03
 > 13913, 17071
 
 March 08
-> 3197
+> 3197,1987,2529
 
 ## 2nd fail
 
