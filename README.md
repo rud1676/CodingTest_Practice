@@ -23,8 +23,6 @@ comming soon after python code
 
 ## Checked Probeldm
 
-March 01
-> 16234
 
 March 02
 > 16637, 12851
